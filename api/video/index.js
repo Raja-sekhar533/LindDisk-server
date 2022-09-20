@@ -35,4 +35,5 @@ router.post('/addView', controller.addViewCount);
 router.get("/revenue/:id", controller.getTotalRevenue);
 router.post("/savetomydisk/:id", controller.savetomydisk);
 router.post("/isVideoSaved", controller.isVideoSaved);
+router.get("/getvideosbyId/:id", controller.getCategorybyId);
 module.exports = router;

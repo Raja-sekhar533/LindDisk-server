@@ -304,5 +304,36 @@ module.exports = {
         } catch (err) {
             res.status(200).send(err.message);
         }
-    }
+    },
+
+    categoryFilter: async(req, res, next) => {
+        try {
+            let name = req.body.name;
+            const catData = await videoModel.find();
+
+            let data = catData.filter(res => {
+                return res.name.toLocaleLowerCase().match(name);
+            })
+            if (data) {
+                res.status(200).json({ data: data });
+            } else {
+                res.status(200).json({ message: 'category not found' });
+            }
+        } catch (e) {
+            res.status(400).send(e.message);
+        }
+    },
+
+    getCategorybyId: async(req, res) => {
+        const _id = req.params.id;
+        try {
+            const category_details = await videoModel.findById(_id);
+            if (!category_details) {
+                return res.status(202).send();
+            }
+            res.send(category_details);
+        } catch (error) {
+            res.status(400).send(error);
+        }
+    },
 }

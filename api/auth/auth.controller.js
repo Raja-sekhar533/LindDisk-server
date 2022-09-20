@@ -6,6 +6,7 @@ module.exports = {
     Signup: async(req, res) => {
         try {
             let user_result = req.body.body;
+            console.log(user_result)
             let result = await authModel.findOne({ email: user_result.email });
             if (result)
                 res.status(208).send({ result: false, message: "user is already registered..." });
@@ -13,7 +14,6 @@ module.exports = {
                 let salt = await bcrypt.genSalt(10);
                 user_result.password = await bcrypt.hash(user_result.password, salt);
                 user_result.revenue = 0;
-                console.log(user_result)
                 try {
                     let new_user = await authModel.create(user_result);
                     const payload = { subject: new_user._id };
@@ -31,14 +31,15 @@ module.exports = {
                         role: userData.role
                     });
                 } catch (e) {
+                    console.log(e)
                     res.status(400).send(e.message)
                 }
 
 
-
-
             }
         } catch (err) {
+            console.log(err)
+
             res.status(400).send(err.message)
         }
     },
@@ -99,6 +100,7 @@ module.exports = {
     },
     AdminLogin: async(req, res, next) => {
         let userData = req.body;
+        console.log(userData)
         try {
             let result = await Admin.findOne({ $or: [{ email: userData.username }, { username: userData.username }] });
             if (result) {
@@ -128,8 +130,10 @@ module.exports = {
     getRevenueById: async(req, res) => {
         const userId = req.params.id;
         try {
-
-            const revenue = await authModel.findById(userId);
+            const token = userId;
+            const decoded = jwt.decode(token, "LineDisk");
+            const _id = decoded.subject
+            const revenue = await authModel.findById(_id);
             if (revenue) {
                 res.status(200).json({ revenue: revenue.revenue });
             }

@@ -14,7 +14,12 @@ const authSchema = mongoose.Schema({
     password: {
         type: String
     },
-    revenue: { type: Number }
+    revenue: { type: Number },
+    role: {
+        type: String,
+        enum: ['ADMINISTRATOR', 'User']
+
+    }
 })
 
 module.exports = mongoose.model('Users', authSchema);

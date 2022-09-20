@@ -14,7 +14,7 @@ const PaymentSchema = mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['InProgress', 'Approved', 'Rejected']
+        enum: ['InProgress', 'Approved', 'Rejected', 'Auditing']
     },
     paymentType: {
         type: String,
