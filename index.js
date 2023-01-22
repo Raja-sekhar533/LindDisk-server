@@ -4,6 +4,8 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 const cookieSession = require("cookie-session");
+require('dotenv').config({ path: './production.env' });
+
 // const http = require('http');
 // const socketio = require('socket.io')
 // const socketEvents = require('./chat/chat');
@@ -13,7 +15,7 @@ const cookieSession = require("cookie-session");
 
 /*------------Database connection----------*/
 mongoose
-    .connect("mongodb+srv://linedisk:linedisk@cluster0.8bimb.mongodb.net/LineDisk?retryWrites=true&w=majority")
+    .connect(process.env.MONGO_URI)
     .then((result) => {
         console.log("Mongodb Database is connected...");
     })
