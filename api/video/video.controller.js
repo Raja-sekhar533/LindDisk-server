@@ -152,9 +152,6 @@ module.exports = {
         const currentPage = +req.query.page;
         console.log(pageSize, currentPage);
 
-        const token = req.params.id;
-        const decoded = jwt.decode(token, "LineDisk");
-        const _id = decoded.subject;
 
         const videosQuery = videoModel.find();
         try {
