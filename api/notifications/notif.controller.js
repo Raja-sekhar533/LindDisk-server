@@ -29,19 +29,21 @@ module.exports = {
         }
     },
     getNotificationsById: async(req, res) => {
-        const token = req.params.id;
-        const decoded = jwt.decode(token, "LineDisk");
-        const _id = decoded.subject;
-        try {
-            let notifications = await notification.find({ userId: _id });
-            if (notifications) {
-                res.status(200).json({ status: true, data: notifications })
-            } else {
-                res.status(200).json({ status: false })
-
+        console.log(req.params.id)
+        if (req.params.id != "null") {
+            const token = req.params.id;
+            const decoded = jwt.decode(token, "LineDisk");
+            const _id = decoded.subject;
+            try {
+                let notifications = await notification.find({ userId: _id });
+                if (notifications) {
+                    res.status(200).json({ status: true, data: notifications })
+                } else {
+                    res.status(200).json({ status: false })
+                }
+            } catch (err) {
+                res.status(400).send(err.message);
             }
-        } catch (err) {
-            res.status(400).send(err.message);
         }
     },
 
