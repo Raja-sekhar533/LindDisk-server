@@ -5,8 +5,9 @@ const mongoose = require("mongoose");
 const morgan = require("morgan");
 const cookieSession = require("cookie-session");
 require('dotenv').config({ path: './production.env' });
-
-// const http = require('http');
+const http = require('http');
+const https = require('https');
+const fs = require('fs');
 // const socketio = require('socket.io')
 // const socketEvents = require('./chat/chat');
 // const { Server } = require ('socket.io');
@@ -51,6 +52,10 @@ app.use(
     })
 );
 
+var options = {
+    key: fs.readFileSync('/etc/letsencrypt/live/linedisk.com/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/linedisk.com/fullchain.pem'),
+};
 
 
 app.set("port", PORT)
@@ -62,7 +67,10 @@ require("./router")(app);
 app.get('/', (req, res) => {
     res.send('hello world')
 })
-
-app.listen(process.env.PORT || 4000, () => {
+var server = https.createServer(options, app).listen(process.env.PORT || 4000, function() {
     console.log("Express server listening on port %d in %s mode", PORT);
-})
+});
+
+// app.listen(process.env.PORT || 4000, () => {
+//     console.log("Express server listening on port %d in %s mode", PORT);
+// });
